@@ -1,6 +1,7 @@
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import { AlertTriangle, ArrowRight } from "lucide-react";
+import { AlertTriangle, ArrowRight, Home, HelpCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const NotFound = () => {
   const location = useLocation();
@@ -10,60 +11,83 @@ const NotFound = () => {
   }, [location.pathname]);
 
   return (
-    <div className="relative flex min-h-screen flex-col items-center justify-center bg-slate-900 px-4">
+    <div className="relative min-h-screen w-full bg-background overflow-hidden flex items-center justify-center">
+      {/* Animated background grid */}
+      <div className="absolute inset-0 opacity-[0.03]" style={{
+        backgroundImage: 'linear-gradient(hsl(var(--primary)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--primary)) 1px, transparent 1px)',
+        backgroundSize: '60px 60px',
+      }} />
+      
+      {/* Glowing orbs */}
+      <div className="absolute top-1/4 right-1/4 w-96 h-96 rounded-full bg-primary/5 blur-3xl opacity-40" />
+      <div className="absolute bottom-1/4 left-1/4 w-96 h-96 rounded-full bg-cyan/5 blur-3xl opacity-40" />
+
       {/* Content */}
-      <div className="text-center max-w-2xl mx-auto">
-        {/* Icon */}
+      <div className="relative z-10 max-w-2xl mx-auto px-6 text-center">
+        {/* Icon with pulse */}
         <div className="mb-8 flex justify-center">
-          <div className="bg-emerald-600 rounded-full p-4">
-            <AlertTriangle className="h-12 w-12 text-white" />
+          <div className="relative">
+            <div className="absolute inset-0 bg-primary/20 blur-2xl rounded-full animate-pulse" />
+            <div className="relative bg-primary/10 border border-primary/30 rounded-full p-6">
+              <AlertTriangle className="h-16 w-16 text-primary animate-pulse-glow" />
+            </div>
           </div>
         </div>
 
         {/* Error Code */}
-        <h1 className="text-6xl md:text-7xl font-bold text-emerald-400 mb-2">
+        <h1 className="text-8xl md:text-9xl font-black tracking-tighter mb-2 bg-gradient-to-b from-primary to-primary/60 bg-clip-text text-transparent">
           404
         </h1>
 
         {/* Heading */}
-        <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+        <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
           Area Not Mapped
         </h2>
 
-        {/* Description */}
-        <p className="text-base md:text-lg text-slate-300 mb-8">
-          The location you're trying to access doesn't exist in our system. It may have been relocated or the path is incorrect.
+        {/* Subheading */}
+        <p className="text-lg text-muted-foreground mb-8 max-w-xl mx-auto">
+          The location you're trying to access doesn't exist in our system. This area may be outside monitored zones or the path has been updated.
         </p>
 
-        {/* Attempted path */}
-        <div className="mb-8 inline-block bg-slate-800 border border-slate-700 rounded px-4 py-2 text-sm text-slate-400">
-          <span className="font-mono">{location.pathname}</span>
+        {/* Attempted path display */}
+        <div className="mb-10 inline-block glass-card px-6 py-3">
+          <p className="text-xs text-muted-foreground mb-1">Attempted Path</p>
+          <p className="font-mono text-sm text-foreground truncate max-w-xs">{location.pathname}</p>
         </div>
 
         {/* Action buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <a
-            href="/"
-            className="inline-flex items-center justify-center gap-2 px-6 py-2 bg-emerald-600 text-white rounded font-semibold hover:bg-emerald-700 transition-colors"
+        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+          <Button 
+            size="lg" 
+            className="gap-2"
+            onClick={() => window.location.href = '/'}
           >
+            <Home className="h-4 w-4" />
             Return Home
-            <ArrowRight className="h-4 w-4" />
-          </a>
-          <a
-            href="/dashboard"
-            className="inline-flex items-center justify-center gap-2 px-6 py-2 bg-slate-700 text-slate-100 rounded font-semibold border border-slate-600 hover:bg-slate-600 transition-colors"
+          </Button>
+          <Button 
+            size="lg" 
+            variant="outline"
+            onClick={() => window.location.href = '/dashboard'}
           >
+            <ArrowRight className="h-4 w-4" />
             Go to Dashboard
-          </a>
+          </Button>
         </div>
 
-        {/* Footer help text */}
-        <p className="mt-12 text-sm text-slate-500">
-          Need help? Contact support or check our{" "}
-          <a href="/" className="text-emerald-400 hover:text-emerald-300 underline">
-            documentation
-          </a>
-        </p>
+        {/* Help section */}
+        <div className="border-t border-border/50 pt-8 mt-8">
+          <div className="inline-flex items-center gap-2 text-muted-foreground mb-4">
+            <HelpCircle className="h-4 w-4" />
+            <span className="text-sm">Still need help?</span>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Contact our support team at{" "}
+            <a href="mailto:support@satguard.ai" className="text-primary hover:text-primary/80 underline transition-colors">
+              support@satguard.ai
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   );
